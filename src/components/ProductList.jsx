@@ -55,10 +55,11 @@ export const ProductLsit = () => {
   const [rowModesModel, setRowModesModel] = useState({});
   const [viewBox, setViewBox] = useState(null);
   const [editBox, setEditBox] = useState(null);
+  const [submitNote, setSubmitNote] = useState(false);
 
   const processRowUpdate = async (newRow) => {
     try {
-      const response = axiosNew.put(`product-list/${newRow.id}`, newRow);
+      const response = await axiosNew.put(`product-list/${newRow.id}`, newRow);
       const updatedRow = await response.data;
       setRows((prevRows) =>
         prevRows.map((row) => (row.id === newRow.id ? updatedRow : row))
@@ -229,9 +230,9 @@ export const ProductLsit = () => {
   useEffect(() => {
     const getProductData = async () => {
       try {
-        const response = axiosNew.get("/product-list");
+        const response = await axiosNew.get("/product-list");
         setRows(response.data);
-        console.log(response);
+        console.log("getProducts",response);
       } catch (error) {
         console.error(error);
       }
@@ -469,11 +470,16 @@ export const ProductLsit = () => {
                     <button
                       className="bg-gray-200 border border-teal-600 text-black font-semibold px-6 py-2 rounded hover:bg-gray-300 transition"
                       onClick={() =>
-                        processRowUpdate(editBox) && setEditBox(null)
+                        processRowUpdate(editBox) && setEditBox(null) && setSubmitNote(true)
                       }
                     >
                       SUBMIT
                     </button>
+                    {submitNote && (
+                    <div className="w-full bg-green-100 text-green-500 border border-green-200 px-4 py-3 rounded flex items-center gap-2">
+                      <span>Product Edited Successfully</span>
+                    </div>
+                  )}
                   </div>
                 </div>
               )}

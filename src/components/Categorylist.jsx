@@ -59,6 +59,7 @@ export default function Categorylist() {
   const [rowModesModel, setRowModesModel] = useState({});
   const [viewRow, setViewRow] = useState(null);
   const [editRow, setEditRow] = useState(null);
+  const [submitNote, setSubmitNote] = useState(false);
 
   useEffect(() => {
     if (location.state?.newCategory) {
@@ -107,7 +108,7 @@ export default function Categorylist() {
 
   const processRowUpdate = async (newRow) => {
     try {
-      const response = axiosNew.put(`/Category-list/${newRow.id}`, newRow);
+      const response = await axiosNew.put(`/Category-list/${newRow.id}`, newRow);
       const updatedRow = await response.data;
       setRows((prevRows) =>
         prevRows.map((row) => (row.id === newRow.id ? updatedRow : row))
@@ -335,7 +336,6 @@ export default function Categorylist() {
                       </div>
                     </div>
                   </fieldset>
-
                   {/* Description */}
                   <fieldset className="border border-teal-600 rounded-md p-4">
                     <legend className="text-teal-600 font-medium px-2">
@@ -354,12 +354,13 @@ export default function Categorylist() {
                    focus:border-teal-600 focus:outline-none"
                     />
                   </fieldset>
-
-                  {/* Submit Button */}
+                 
                   <button
                     type="submit"
                     onClick={() =>
-                      processRowUpdate(editRow) && setEditRow(null)
+                      processRowUpdate(editRow) &&
+                      setEditRow(null) &&
+                      setSubmitNote(true)
                     }
                     className="bg-gray-200 border border-teal-600 text-black 
                  font-semibold px-6 py-2 rounded hover:bg-gray-300 
@@ -367,6 +368,11 @@ export default function Categorylist() {
                   >
                     SUBMIT
                   </button>
+                  {submitNote && (
+                    <div className="w-full bg-green-100 text-green-500 border border-green-200 px-4 py-3 rounded flex items-center gap-2">
+                      <span>Category Edited Successfully</span>
+                    </div>
+                  )}
                 </div>
               </>
             )}

@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import { Navigate, BrowserRouter as Router} from 'react-router-dom';
 
-import { useNavigate } from 'react-router-dom';
+
 import { Route ,Routes ,Outlet } from 'react-router-dom';
 import SignUp from './components/SignUp.jsx';
 import { PrivateRoutes } from './components/PrivateRoutes.jsx';
